@@ -4,12 +4,13 @@
   "description": "A bot that buys and sells cryptos using the Binance API",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./src/cron.js"
   },
   "author": "PanosMits",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",
+    "ccxt": "^1.47.93",
     "dotenv": "^8.2.0",
     "node-cron": "^3.0.0"
   }

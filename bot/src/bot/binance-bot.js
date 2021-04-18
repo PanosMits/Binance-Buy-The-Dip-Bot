@@ -1,4 +1,5 @@
 const BinanceService = require('../services/binance-service');
+const MarketsService = require('../services/markets-service');
 
 class Bot {
     /**
@@ -7,16 +8,24 @@ class Bot {
     #binanceService;
 
     /**
-     * @param {BinanceService} binanceService The binance service
+     *  @param {MarketsService}
      */
-    constructor(binanceService) {
+    #marketsService;
+
+    /**
+     * @param {BinanceService} binanceService The binance service
+     * @param {MarketsService} marketsService The markets service
+     */
+    constructor(binanceService, marketsService) {
         this.#binanceService = binanceService;
+        this.#marketsService = marketsService;
     }
 
-    run() {
-        const result = this.#binanceService.getTickerPrice();
+    async run() {
+        // const result = this.#binanceService.getTickerPrice();
+        const result = await this.#marketsService.getDollarMarkets();
         console.log(result);
     }
 }
 
-module.exports = new Bot(BinanceService);
+module.exports = new Bot(BinanceService, MarketsService);

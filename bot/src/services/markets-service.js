@@ -26,8 +26,7 @@ class MarketsService {
 
     /**
      * Filters the USDT markets
-     * @param {object} markets
-     * @returns {array<object>} An array of objects containing the filtered markets
+     * @returns {array<Market>} An array of Market instances
      */
     async getDollarMarkets() {
         const marketCollection = await this.#marketsRepository.getMarkets();

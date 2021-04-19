@@ -22,9 +22,8 @@ class Bot {
     }
 
     async run() {
-        // const result = this.#binanceService.getTickerPrice();
-        const result = await this.#marketsService.getDollarMarkets();
-        console.log(result);
+        const dollarMarkets = await this.#marketsService.getDollarMarkets();
+        console.log(dollarMarkets);
     }
 }
 

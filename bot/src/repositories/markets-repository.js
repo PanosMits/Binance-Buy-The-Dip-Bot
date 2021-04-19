@@ -1,4 +1,5 @@
 const BinanceClient = require('../model/binance-client');
+const MarketCollection = require('../model/market-collection');
 
 class MarketsRepository {
     /**
@@ -13,8 +14,13 @@ class MarketsRepository {
         this.#binanceClient = binanceClient;
     }
 
+    /**
+     * Gets all the available markets in Binance
+     * @returns {MarketCollection} A MarketCollection
+     */
     async getMarkets() {
-        return this.#binanceClient.loadMarkets();
+        const markets = await this.#binanceClient.loadMarkets();
+        return MarketCollection.fromResponse(markets);
     }
 }
 

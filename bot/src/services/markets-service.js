@@ -18,8 +18,7 @@ class MarketsService {
 
     /**
      * Gets all the available markets in Binance
-     * @param {object} markets
-     * @returns {array<object>} An array of objects containing the markets
+     * @returns {MarketCollection} A MarketCollection
      */
     async getMarkets() {
         return this.#marketsRepository.getMarkets();
@@ -31,14 +30,8 @@ class MarketsService {
      * @returns {array<object>} An array of objects containing the filtered markets
      */
     async getDollarMarkets() {
-        const markets = await this.#marketsRepository.getMarkets();
-        const dollarMarkets = [];
-        for (const market in markets) {
-            if (markets[market].quoteId === 'USDT' && markets[market].spot === true) {
-                dollarMarkets.push(markets[market]);
-            }
-        }
-        return dollarMarkets;
+        const marketCollection = await this.#marketsRepository.getMarkets();
+        return marketCollection.getDollarMarkets();
     }
 }
 

@@ -1,23 +1,15 @@
-const BinanceService = require('../services/binance-service');
 const MarketsService = require('../services/markets-service');
 
 class Bot {
-    /**
-     *  @param {BinanceService}
-     */
-    #binanceService;
-
     /**
      *  @param {MarketsService}
      */
     #marketsService;
 
     /**
-     * @param {BinanceService} binanceService The binance service
      * @param {MarketsService} marketsService The markets service
      */
-    constructor(binanceService, marketsService) {
-        this.#binanceService = binanceService;
+    constructor(marketsService) {
         this.#marketsService = marketsService;
     }
 
@@ -27,4 +19,4 @@ class Bot {
     }
 }
 
-module.exports = new Bot(BinanceService, MarketsService);
+module.exports = new Bot(MarketsService);

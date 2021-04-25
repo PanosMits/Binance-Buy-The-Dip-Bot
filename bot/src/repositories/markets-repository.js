@@ -1,5 +1,5 @@
-const BinanceClient = require('../model/binance-client');
-const MarketCollection = require('../model/market-collection');
+const BinanceClient = require('../model/client/binance-client');
+const MarketCollection = require('../model/market/market-collection');
 
 class MarketsRepository {
     /**

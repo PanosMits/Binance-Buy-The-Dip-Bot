@@ -28,11 +28,20 @@ class MarketCollection {
     }
 
     /**
-     * Gets all the card from the collection that are used for HLR auto top-ups
-     * @returns {array} An array containing the cards
+     * Creates a MarketCollection from an array of Market instances
+     * @param {Market[]} markets
+     * @returns An MarketCollection with the Market instances provided
+     */
+    static fromArray(markets) {
+        return new this(...markets);
+    }
+
+    /**
+     * Filters out any non-USDT Market instance
+     * @returns {MarketCollection} An MarketCollection containing only the USDT markets
      */
     getDollarMarkets() {
-        return this.markets.filter((market) => market.isDollarMarket());
+        return MarketCollection.fromArray(this.markets.filter((market) => market.isDollarMarket()));
     }
 }
 

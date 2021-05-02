@@ -4,14 +4,14 @@ const Market = require('./market');
  * This class represents a collection of Market instances
  */
 class MarketCollection {
-    markets;
+    #markets;
 
     /**
      * Constructor
-     * @param {array} markets An amount of Market instances
+     * @param {Market[]} markets An amount of Market instances
      */
     constructor(...markets) {
-        this.markets = markets;
+        this.#markets = markets;
     }
 
     /**
@@ -41,7 +41,14 @@ class MarketCollection {
      * @returns {MarketCollection} An MarketCollection containing only the USDT markets
      */
     getDollarMarkets() {
-        return MarketCollection.fromArray(this.markets.filter((market) => market.isDollarMarket()));
+        return MarketCollection.fromArray(this.#markets.filter((market) => market.isDollarMarket()));
+    }
+
+    /**
+     * @returns {Array} The markets
+     */
+    toArray() {
+        return this.#markets;
     }
 }
 

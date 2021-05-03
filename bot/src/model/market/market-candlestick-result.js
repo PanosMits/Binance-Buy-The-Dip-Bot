@@ -31,6 +31,7 @@ class MarketCandlestickResult {
 
     /**
      * Gets the 24 hour difference for the market
+     * @returns {number} The difference in percentage for the last 24 hours
      */
     getMarket24HourDifference() {
         const candlesticks = this.#candlestickCollection.toObject().candlesticks;
@@ -38,6 +39,14 @@ class MarketCandlestickResult {
         const twentyFourHoursTimestamp = this.#candlestickCollection.get24HourTimestamp();
         const candleStick24HoursAgo = candlesticks.filter((candlestick) => candlestick.timestamp === twentyFourHoursTimestamp)[0];
         return PercentageChangeCalculator.calculate(candleStick24HoursAgo.close, latestCandlestick.close);
+
+        // TODO: This might break sometimes when a new pair is added to BinanceSome markets do not have enough ohlcv data.
+        // because there won't be enough ohlcv data
+        // Fix:
+        // if (candleStick24HoursAgo) {
+        // return PercentageChangeCalculator.calculate(candleStick24HoursAgo.close, latestCandlestick.close);
+        // }
+        // return undefined;
     }
 }
 

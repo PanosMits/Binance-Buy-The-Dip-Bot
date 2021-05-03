@@ -3,7 +3,7 @@ const CandlestickCollection = require('../model/candlestick/candlestick-collecti
 const Timeframe = require('../model/enums/timeframe');
 
 class CandlestickRepository {
-    #MAX_LIMIT = 5; // TODO: Change it back to 1000
+    #MAX_LIMIT = 1000;
 
     /**
      *  @param {BinanceClient}

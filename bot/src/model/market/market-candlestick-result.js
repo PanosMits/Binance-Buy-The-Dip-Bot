@@ -1,3 +1,5 @@
+const PercentageChangeCalculator = require('../../services/percentage-change-calculator');
+
 /**
  * This model class holds information about a market's ohlc prices
  */
@@ -25,6 +27,17 @@ class MarketCandlestickResult {
             symbol: this.#symbol,
             candlestickCollection: this.#candlestickCollection,
         };
+    }
+
+    /**
+     * Gets the 24 hour difference for the market
+     */
+    getMarket24HourDifference() {
+        const candlesticks = this.#candlestickCollection.toObject().candlesticks;
+        const latestCandlestick = candlesticks[candlesticks.length - 1];
+        const twentyFourHoursTimestamp = this.#candlestickCollection.get24HourTimestamp();
+        const candleStick24HoursAgo = candlesticks.filter((candlestick) => candlestick.timestamp === twentyFourHoursTimestamp)[0];
+        return PercentageChangeCalculator.calculate(candleStick24HoursAgo.close, latestCandlestick.close);
     }
 }
 

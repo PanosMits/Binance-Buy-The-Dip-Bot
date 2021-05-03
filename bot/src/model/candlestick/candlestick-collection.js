@@ -38,6 +38,16 @@ class CandlestickCollection {
     toObject() {
         return { timeframe: this.#timeframe, candlesticks: this.#candlesticks };
     }
+
+    /**
+     * NOTE: This might not be accurate for every frametime, but it works for the 5m timeframe and this will do for now
+     * Gets the timestamp 24 hours ago
+     * @returns {number} The timestamp 24 hours ago
+     */
+    get24HourTimestamp() {
+        const lastCandlestickTimestamp = this.#candlesticks[this.#candlesticks.length - 1].timestamp;
+        return lastCandlestickTimestamp - (24 * 60 * 60 * 1000);
+    }
 }
 
 module.exports = CandlestickCollection;

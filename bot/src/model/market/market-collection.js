@@ -45,7 +45,15 @@ class MarketCollection {
     }
 
     /**
-     * @returns {Array} The markets
+     * Get an array with all the market symbols
+     * @returns {string[]} An array with all the market symbols
+     */
+    getMarketSymbols() {
+        return this.#markets.map((market) => market.symbol);
+    }
+
+    /**
+     * @returns {Market[]} The markets
      */
     toArray() {
         return this.#markets;

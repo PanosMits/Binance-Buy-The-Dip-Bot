@@ -28,10 +28,14 @@ class TickerCollection {
     }
 
     /**
-     * @returns {Ticker[]} The tickers
+     * Gets all the tickers with -9% or less percentage change
+     * @returns {Ticker[]} An array of tickers ordered based on the percentage change
+     *  biggest drop first
      */
-    toArray() {
-        return this.#tickers;
+    getBiggestNegativePercentages() {
+        return this.#tickers
+            .filter((ticker) => ticker.percentageChange <= -9)
+            .sort((ticker, nextTicker) => ticker.percentageChange - nextTicker.percentageChange);
     }
 }
 

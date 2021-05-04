@@ -1,4 +1,5 @@
 const BinanceClient = require('../model/binance-client');
+const TickerCollection = require('../model/ticker/ticker-collection');
 
 class TickerRepository {
     /**
@@ -25,10 +26,11 @@ class TickerRepository {
     /**
      * Gets ticker data for a set of tickers
      * @param {string[]} tickers The tickers we want the data for
-     * @returns {object} The ticker data
+     * @returns {TickerCollection} The ticker data
      */
     async getTickers(tickers) {
-        return this.#binanceClient.fetchTickers(tickers);
+        const response = await this.#binanceClient.fetchTickers(tickers);
+        return TickerCollection.fromResponse(response);
     }
 }
 

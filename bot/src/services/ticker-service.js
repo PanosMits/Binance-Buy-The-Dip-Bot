@@ -28,9 +28,9 @@ class TickerService {
     /**
      * Gets ticker data for a set of markets
      * @param {MarketCollection} marketCollection The markets want the ticker data for
-     * @returns {object} The ticker data
+     * @returns {TickerCollection} A ticker collection
      */
-    async getTickers(marketCollection) {
+    async getTickersForMarkets(marketCollection) {
         return this.#tickerRepository.getTickers(marketCollection.getMarketSymbols());
     }
 }

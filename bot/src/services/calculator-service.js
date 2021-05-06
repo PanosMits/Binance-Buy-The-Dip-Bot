@@ -48,6 +48,16 @@ class CalculatorService {
      * and calculating how much of the crypto equals to USDT amount passed in, then we can use that amount to the function
      * that eventually calls the Exchange API and executes the order.
      * 
+     * // TODO:
+     * IMPORTANT NOTE !!!
+     *  After looking into the ccxt source code for binance class I found out that there is
+     *  an option called 'quoteOrderQty' which is set to 'true' and basically allows to perform
+     *  transactions using quote currency amounts.
+     *  Example - spend 20 USDT to buy BTC:
+     *    params = { 'quoteOrderQty': 20 };
+     *    const order = await binance.createOrder('BTC/USDT', 'market', 'buy', null, null, params);
+     *  Useful Link: https://stackoverflow.com/questions/67323134/how-to-use-amounttoprecision-ccxt-library
+     * 
      * Calculates the amount of the crypto needed to be bought that equals the usdtAmount passed in.
      * @param {string} symbol The symbol of the market
      * @param {number} usdtAmount The amount of USDT we want to spend

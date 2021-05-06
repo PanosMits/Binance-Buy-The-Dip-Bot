@@ -1,4 +1,4 @@
-const PercentageChangeCalculator = require('../../services/percentage-change-calculator');
+const CalculatorService = require('../../services/calculator-service');
 
 /**
  * This model class holds information about a market's ohlc prices
@@ -38,7 +38,7 @@ class MarketCandlestickResult {
         const latestCandlestick = candlesticks[candlesticks.length - 1];
         const twentyFourHoursTimestamp = this.#candlestickCollection.get24HourTimestamp();
         const candleStick24HoursAgo = candlesticks.filter((candlestick) => candlestick.timestamp === twentyFourHoursTimestamp)[0];
-        return PercentageChangeCalculator.calculate(candleStick24HoursAgo.close, latestCandlestick.close);
+        return CalculatorService.calculatePercentageDifference(candleStick24HoursAgo.close, latestCandlestick.close);
 
         // TODO: This might break sometimes when a new pair is added to BinanceSome markets do not have enough ohlcv data.
         // because there won't be enough ohlcv data

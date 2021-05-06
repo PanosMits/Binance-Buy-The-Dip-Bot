@@ -39,7 +39,7 @@ class MarketsService {
      * @returns {MarketCollection} An array of Market instances
      */
     async getDollarMarketsExcludingETFs() {
-        const etfMArketsList = [
+        const etfMarketsList = [
             '1INCHUP/USDT', '1INCHDOWN/USDT',
             'XLMUP/USDT', 'XLMDOWN/USDT',
             'SUSHIUP/USDT', 'SUSHIDOWN/USDT',
@@ -64,7 +64,7 @@ class MarketsService {
         const markets = await this.getDollarMarkets();
         const marketsExcludingETFs = markets
             .toArray()
-            .filter((market) => !etfMArketsList.includes(market.symbol));
+            .filter((market) => !etfMarketsList.includes(market.symbol));
 
         return MarketCollection.fromArray(marketsExcludingETFs);
     }

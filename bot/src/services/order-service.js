@@ -27,7 +27,8 @@ class OrderService {
         const cryptoAmount = await CalculatorService.calculateCryptoAmountForUSDT(symbol, this.#defaultBuyAmount);
         const order = this.#orderRepository.createMarketBuyOrder(symbol, cryptoAmount);
         // TODO: Save order to DB -> await this.#orderRepository.saveOrder(order);
-        // Note: If for some reason fails to save in DB, we need to cancel the order immidiately
+        // Note: If for some reason fails to save in DB, we need to cancel(limit order) or 
+        //  immidiately sell(market order) the order immidiately
         //  cause otherwise won't have a way to know when will be a good time to sell the amount bought
         //  cause there won't be anything to compare it with
         return order;

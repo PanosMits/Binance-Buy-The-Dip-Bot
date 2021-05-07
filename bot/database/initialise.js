@@ -1,5 +1,6 @@
 // NOTE:
-// This is a basic initial setup for the MYSql database the bot connects to
+// This is a basic initial setup for the MYSql database the bot connects to.
+// An ORM would be an overkill I believe.
 // In order to execute the code in this file you first need to have a MySql server running somewhere
 // Then you need to provide the env variables DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE
 // Finally, just run the file or 'npm start -createdb'
@@ -21,10 +22,11 @@ const createBuyOrdersTable = `
         order_id varchar(36) NOT NULL PRIMARY KEY,
         exchange_order_id varchar(255) NOT NULL, 
         symbol varchar(255) NOT NULL,
-        date int(10) NOT NULL COMMENT 'The date the buy order took place - as timestamp',
+        date int(10) NOT NULL COMMENT 'The date the buy order was executed - as timestamp',
         base_amount_bought decimal(65, 30) NOT NULL COMMENT 'The amount of the base currency bought',
         price_bought_at decimal(65, 30) NOT NULL COMMENT 'The price of the crypto at the time of purchase',
-        quote_amount_spent decimal(65, 30) NOT NULL COMMENT 'The amount of the quote currency spent in order to buy the base currency'
+        quote_amount_spent decimal(65, 30) NOT NULL COMMENT 'The amount of the quote currency spent in order to buy the base currency',
+        active boolean COMMENT 'Wether this is an active order, meaning if has been sold or not yet'
     );
 `;
 
@@ -33,7 +35,7 @@ const createSellOrdersTable = `
         order_id varchar(36) NOT NULL PRIMARY KEY,
         buy_order_id varchar(36) NOT NULL,
         exchange_order_id varchar(255) NOT NULL, 
-        date int(10) NOT NULL COMMENT 'The date the sell order took place - as timestamp',
+        date int(10) NOT NULL COMMENT 'The date the sell order was executed - as timestamp',
         base_amount_sold decimal(65, 30) NOT NULL COMMENT 'The amount of the base currency sold',
         price_sold_at decimal(65, 30) NOT NULL COMMENT 'The quote price of the crypto at the time of sell',
         quote_amount_returned decimal(65, 30) NOT NULL COMMENT 'Technically, this is the profit made',

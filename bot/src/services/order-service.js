@@ -41,6 +41,11 @@ class OrderService {
     async createMarketSellOrder(symbol) {
         // TODO: Get the balance of the symbol, save it as amount and pass it down to
         // createMarketSellOrder(symbol, amount). This will then be used as the amount to be sold
+
+        // Get all the active buy orders from database
+        // Compare the current price of the symbol for each of the active orders with the price_bought_at,
+        //  if the current price of the symbol is 10% or higher than price_bought_at then procced on selling that order.
+        //  After selling, set active to false in buy_orders table and create a new record in sell_orders
         return this.#orderRepository.createMarketSellOrder(symbol);
     }
 }

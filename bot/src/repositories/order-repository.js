@@ -25,6 +25,12 @@ class OrderRepository {
     async createMarketBuyOrder(symbol, amount) {
         const order = await this.#binanceClient.createMarketBuyOrder(symbol, amount);
         return Order.fromResponse(order);
+
+        // TODO:
+        //  Test function for buying based on the quote currency
+        //  params = { 'quoteOrderQty': 20 };
+        //  const order = await binance.createOrder(symbol, 'market', 'buy', null, null, params);
+
     }
 
     /**

@@ -28,7 +28,8 @@ class OrderService {
         const order = this.#orderRepository.createMarketBuyOrder(symbol, cryptoAmount);
         // TODO: Check if there is sufficient balance for performing a purchase
         // TODO: Get all the records from buy_orders WHERE symbol = symbol AND active = True,
-        //   if any those has been purchase within the last 24hours do NOT buy again
+        //   - if symbol has more than 3 active buy orders do NOT buy again
+        //   - if any of those has been purchased within the last 24hours do NOT buy again
         // TODO: Save order to DB
         //   await this.#orderRepository.saveOrder(order);
         //   Note: If for some reason fails to save in DB, we need to cancel(limit order) or 

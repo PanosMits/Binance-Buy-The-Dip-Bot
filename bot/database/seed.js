@@ -1,4 +1,4 @@
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config({ path: '.env' });
 const mysql = require('mysql2');
 const dayjs = require('dayjs');
 
@@ -36,7 +36,7 @@ const seedBuyOrders = `
         ('aec38f0e-fef0-4b0f-a6ae-9b34ae17cd94', '11d44d61-78fd-4d3f-90cc-03c5b1cf7d3c', 'ETH/USDT', ${dayjs().subtract(2, 'day').unix()}, '0.00311832483', '3206.85', 10, true),
         ('1230633e-f687-4fb0-a3dc-e1673b5d1947', 'acbdc179-2d71-4974-9dda-b6277d06ad97', 'ADA/USDT', ${dayjs().subtract(5, 'day').unix()}, '5.91715976331', '1.69', 10, true),
         ('a22c183b-4997-4cd4-8d96-15d635dd69e7', '14ff683b-9809-4469-a569-1ef9b4667a95', 'ADA/USDT', ${dayjs().subtract(10, 'day').unix()}, '8.84955752212', '1.13', 10, true),
-        ('75b1c618-6600-413a-a5eb-56114706a01a', '34282fd5-4ea2-485d-9fa4-0dfc726fc5f8', 'ADA/USDT', ${dayjs().subtract(1, 'month').unix()}, '10.8695652174', '0.92', 10, false),
+        ('75b1c618-6600-413a-a5eb-56114706a01a', '34282fd5-4ea2-485d-9fa4-0dfc726fc5f8', 'ADA/USDT', ${dayjs().subtract(1, 'month').unix()}, '10.8695652174', '0.92', 10, false);
 `;
 
 db.query(seedBuyOrders, (err) => {

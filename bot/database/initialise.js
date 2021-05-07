@@ -5,7 +5,7 @@
 // Then you need to provide the env variables DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE
 // Finally, just run the file or 'npm start -createdb'
 
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config({ path: '.env' });
 const mysql = require('mysql2');
 
 const db = mysql.createConnection({

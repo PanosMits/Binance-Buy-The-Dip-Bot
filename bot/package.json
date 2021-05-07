@@ -5,13 +5,16 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./src/cron.js",
-    "start -createdb": "node ./database/initialise.js && node ./src/cron.js"
+    "start db:create": "node ./database/initialise.js && node ./src/cron.js",
+    "db:create": "node ./database/initialise.js",
+    "db:seed": "node ./database/seed.js"
   },
   "author": "PanosMits",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",
     "ccxt": "^1.47.93",
+    "dayjs": "^1.10.4",
     "dotenv": "^8.2.0",
     "mysql2": "^2.2.5",
     "node-cron": "^3.0.0"

@@ -53,30 +53,4 @@ db.query(createSellOrdersTable, (err) => {
     console.log('sell_orders table created.');
 });
 
-// TEST
-// const testBuyOrderInsert = `
-//     INSERT INTO buy_orders (
-//         order_id,
-//         exchange_order_id,
-//         symbol,
-//         date,
-//         base_amount_bought,
-//         price_bought_at,
-//         quote_amount_spent
-//     )
-//     VALUES (
-//         'fa496854-0ed7-4cc5-b429-539cbe8cf70c',
-//         'aba57496-13ff-4126-be5a-c8361d43a1a4',
-//         'EOSDOWN/USDT',
-//         1620393191,
-//         4310.3448275862065,
-//         0.00229,
-//         10
-//     );
-// `;
-// db.query(testBuyOrderInsert, (err) => {
-//     if (err) throw err;
-//     console.log('Data inserted.');
-// });
-
 db.end();

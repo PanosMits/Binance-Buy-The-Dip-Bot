@@ -7,7 +7,7 @@ const InsufficientBalanceError = require('../errors/insufficient-balance-error')
  * This class is used to handle orders
  */
 class OrderService {
-    #defaultBuyAmount = 100;
+    #defaultBuyAmount = 10;
 
     /**
      *  @param {OrderRepository}

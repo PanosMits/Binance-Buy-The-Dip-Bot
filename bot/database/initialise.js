@@ -5,7 +5,7 @@
 // Then you need to provide the env variables DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE
 // Finally, just run the file or 'npm start -createdb'
 
-require('dotenv').config({ path: '.env' });
+require('dotenv').config({ path: '../.env' });
 const mysql = require('mysql2');
 
 const db = mysql.createConnection({
@@ -20,9 +20,10 @@ db.connect((error) => error ? console.log('Could not connect to db') : console.l
 const createBuyOrdersTable = `
     CREATE TABLE IF NOT EXISTS buy_orders (
         order_id varchar(36) NOT NULL PRIMARY KEY,
-        exchange_order_id varchar(255) NOT NULL, 
+        exchange_order_id varchar(255) NOT NULL COMMENT 'The clientOrderId fromt the response',
         symbol varchar(255) NOT NULL,
-        date int(10) NOT NULL COMMENT 'The date the buy order was executed - as timestamp',
+        date int(20) NOT NULL COMMENT 'The date the buy order was executed - as timestamp',
+        timezone varchar(10) NOT NULL COMMENT 'The timezone the date is referring to',
         base_amount_bought decimal(65, 30) NOT NULL COMMENT 'The amount of the base currency bought',
         price_bought_at decimal(65, 30) NOT NULL COMMENT 'The price of the crypto at the time of purchase',
         quote_amount_spent decimal(65, 30) NOT NULL COMMENT 'The amount of the quote currency spent in order to buy the base currency',

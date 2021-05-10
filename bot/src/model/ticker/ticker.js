@@ -6,13 +6,17 @@ class Ticker {
 
     percentageChange;
 
+    bidPrice;
+
     /**
      * @param {string} symbol The ticker's symbol
      * @param {number} percentageChange The 24 hour percentage change
+     * @param {number} bidPrice The bid price - The best available I can sell a crypto at
      */
-    constructor(symbol, percentageChange) {
+    constructor(symbol, percentageChange, bidPrice) {
         this.symbol = symbol;
         this.percentageChange = percentageChange;
+        this.bidPrice = bidPrice;
     }
 
     /**
@@ -24,6 +28,7 @@ class Ticker {
         return new this(
             tickerConfig.symbol,
             tickerConfig.percentage,
+            tickerConfig.bid,
         );
     }
 }

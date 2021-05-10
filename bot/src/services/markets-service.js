@@ -35,7 +35,7 @@ class MarketsService {
     }
 
     /**
-     * Filters the USDT markets
+     * Excludes the ETF markets
      * @returns {MarketCollection} An array of Market instances
      */
     async getDollarMarketsExcludingETFs() {
@@ -61,12 +61,35 @@ class MarketsService {
             'ETHUP/USDT', 'ETHDOWN/USDT',
             'BTCUP/USDT', 'BTCDOWN/USDT'
         ];
+
         const markets = await this.getDollarMarkets();
         const marketsExcludingETFs = markets
             .toArray()
             .filter((market) => !etfMarketsList.includes(market.symbol));
 
         return MarketCollection.fromArray(marketsExcludingETFs);
+    }
+
+    /**
+     * Excludes the specified markets
+     * @returns {MarketCollection} An array of Market instances
+     */
+    async getDollarMarketsExcludingSpecifiedMarkets() {
+        const excludedMarketsList = [
+            '1INCHUP/USDT', '1INCHDOWN/USDT', 'XLMUP/USDT', 'XLMDOWN/USDT', 'SUSHIUP/USDT', 'SUSHIDOWN/USDT',
+            'AAVEUP/USDT', 'AAVEDOWN/USDT', 'BCHUP/USDT', 'BCHDOWN/USDT', 'YFIUP/USDT', 'YFIDOWN/USDT',
+            'FILUP/USDT', 'FILDOWN/USDT', 'SXPUP/USDT', 'SXPDOWN/USDT', 'UNIUP/USDT', 'UNIDOWN/USDT',
+            'LTCUP/USDT', 'LTCDOWN/USDT', 'XRPUP/USDT', 'XRPDOWN/USDT', 'DOTUP/USDT', 'DOTDOWN/USDT',
+            'TRXUP/USDT', 'TRXDOWN/USDT', 'EOSUP/USDT', 'EOSDOWN/USDT', 'XTZUP/USDT', 'XTZDOWN/USDT',
+            'BNBUP/USDT', 'BNBDOWN/USDT', 'LINKUP/USDT', 'LINKDOWN/USDT', 'ADAUP/USDT', 'ADADOWN/USDT',
+            'ETHUP/USDT', 'ETHDOWN/USDT', 'BTCUP/USDT', 'BTCDOWN/USDT', 'DOGE/USDT'
+        ];
+        const markets = await this.getDollarMarkets();
+        const marketsExcludingSpecifiedMarkets = markets
+            .toArray()
+            .filter((market) => !excludedMarketsList.includes(market.symbol));
+
+        return MarketCollection.fromArray(marketsExcludingSpecifiedMarkets);
     }
 }
 

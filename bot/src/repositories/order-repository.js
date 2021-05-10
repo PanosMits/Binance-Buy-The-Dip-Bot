@@ -1,11 +1,16 @@
 const mysql = require('mysql2');
 const BinanceClient = require('../model/binance-client');
 const DatabaseClient = require('../model/database-client');
-const Order = require('../model/order/order');
-const OrderType = require('../model/enums/order-type');
-const OrderSide = require('../model/enums/order-side');
+const BuyOrderCollection = require('../model/order/buy-order-collection');
 const DatabaseError = require('../errors/database-error');
 
+/**
+ * This class is used to interact with anything order related.
+ * This is from creating an order in Binance or getting the orders from the database.
+ * NOTE: I am creating and closing a MySql connection in each class that needs to speak to the database.
+ *   Initially, I was passing the database client as a dependency of the class but this had a few issues
+ *   when I was trying to close the connection.
+ */
 class OrderRepository {
     /**
      *  @param {BinanceClient}
@@ -13,27 +18,21 @@ class OrderRepository {
     #binanceClient;
 
     /**
-     *  @param {DatabaseClient}
-     */
-    #databaseClient;
-
-    /**
      * @param {BinanceClient} binanceClient The Binance client
-     * @param {DatabaseClient} databaseClient The Database client
      */
-    constructor(binanceClient, databaseClient) {
+    constructor(binanceClient) {
         this.#binanceClient = binanceClient;
-        this.#databaseClient = databaseClient;
     }
 
     /**
      * Gets all the active orders for a symbol from the database
      * @param {string} symbol The symbol of the market you want to get the active buy orders
-     * @returns {Order} A BuyOrder instance
+     * @returns {BuyOrderCollection} A BuyOrderCollection instance
      */
     async getActiveBuyOrdersForSymbol(symbol) {
+        const connection = await DatabaseClient.createConnection();
         const query = 'SELECT * FROM buy_orders WHERE symbol = ? AND active = true';
-        const results = await this.#databaseClient.promise()
+        const results = await connection.promise()
             .query(query, [symbol])
             .then(([rows]) => rows)
             .catch((error) => {
@@ -41,11 +40,8 @@ class OrderRepository {
                 throw DatabaseError.fromError(error);
             });
 
-        this.#databaseClient.end();
-
-        // TODO: Return a BuyOrderCollection
-        // return BuyOrder.fromDatabaseResponse(results);
-        return results;
+        connection.end();
+        return BuyOrderCollection.fromDatabaseResponse(results);
     }
 
     /**
@@ -73,10 +69,4 @@ class OrderRepository {
     }
 }
 
-module.exports = new OrderRepository(BinanceClient.getInstance(), mysql.createPool({
-    connectionLimit: 10,
-    host: process.env.DB_HOST,
-    user: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
-}));
+module.exports = new OrderRepository(BinanceClient.getInstance());

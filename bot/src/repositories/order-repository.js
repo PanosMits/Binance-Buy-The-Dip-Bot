@@ -45,6 +45,27 @@ class OrderRepository {
     }
 
     /**
+     * Saves a buy order in buy_orders table in database 
+     * @param {BuyOrder} order The buy order to be saved
+     */
+    async saveBuyOrder(order) {
+        const connection = await DatabaseClient.createConnection();
+        const query = 'INSERT INTO buy_orders '
+            + '(order_id, exchange_order_id, symbol, date, timezone, base_amount_bought, price_bought_at, quote_amount_spent, active) '
+            + 'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+
+        const response = await connection.promise()
+            .query(query, order.toDatabaseFormat())
+            .then(([result]) => result)
+            .catch((error) => {
+                console.error(`Error occurred while saving buy order: ${order.toDatabaseFormat()}`);
+                throw DatabaseError.fromError(error);
+            });
+
+        connection.end();
+    }
+
+    /**
      * Creates a market buy order
      * @param {string} symbol The symbol of the market we want to buy
      * @param {number} amount The quote currency amount we want to spend

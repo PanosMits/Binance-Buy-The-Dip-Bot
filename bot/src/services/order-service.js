@@ -47,17 +47,15 @@ class OrderService {
             if (buyOrderCollection.lastOrderBoughtWithin24Hours()) throw BoughtWithin24HoursError.fromSymbol(symbol);
 
             const order = await this.#orderRepository.createMarketBuyOrder(symbol, this.#defaultBuyAmount);
-
-            // TODO: Save order to DB
-            //   await this.#orderRepository.saveBuyOrder(order);
-            //   Note: If for some reason fails to save in DB, we need to cancel(limit order) or 
-            //     immidiately sell(market) the order immidiately
-            //     cause otherwise won't have a way to know when will be a good time to sell the amount bought
-            //     cause there won't be anything to compare it with
+            await this.#orderRepository.saveBuyOrder(order);
 
             return order;
         } catch (error) {
             // TODO: In case of error might need to cancel the order here ?
+            // If for some reason fails to save in DB, we need to cancel(limit order) or
+            //     immidiately sell(market) the order immidiately
+            //     cause otherwise won't have a way to know when will be a good time to sell the amount bought
+            //     cause there won't be anything to compare it with
             console.error(`An error occurred while creating an order for ${symbol}: ${error.message}`);
             throw error;
         }

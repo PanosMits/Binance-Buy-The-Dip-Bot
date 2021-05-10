@@ -92,6 +92,24 @@ class BuyOrder {
             orderConfig.active,
         );
     }
+
+    /**
+     * Converts the object to database compatible format
+     * @returns {array} The object to database format
+     */
+    toDatabaseFormat() {
+        return [
+            this.orderId,
+            this.exchangeOrderId,
+            this.symbol,
+            this.date,
+            this.timezone,
+            this.baseAmountBought,
+            this.priceBoughtAt,
+            this.quoteAmountSpent,
+            this.active
+        ];
+    }
 }
 
 module.exports = BuyOrder;

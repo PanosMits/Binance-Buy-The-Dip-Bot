@@ -52,7 +52,7 @@ class Bot {
             await Promise.allSettled(buyOrderCollection.toArray().map((order) => this.#orderService.createMarketSellOrderForBuyOrder(order)));
         }
 
-        console.log('Finised...');
+        console.log('Finised job...');
     }
 }
 

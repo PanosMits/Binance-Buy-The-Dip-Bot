@@ -1,5 +1,8 @@
+const uuid = require('uuid');
 const OrderRepository = require('../repositories/order-repository');
 const BalanceRepository = require('../repositories/balance-repository');
+const TickerRepository = require('../repositories/ticker-repository');
+const CalculatorService = require('../services/calculator-service');
 const InsufficientBalanceError = require('../errors/insufficient-balance-error');
 const ActiveOrderLimitError = require('../errors/active-order-limit-error');
 const BoughtWithin24HoursError = require('../errors/bought-within-24-hours-error');
@@ -8,8 +11,9 @@ const BoughtWithin24HoursError = require('../errors/bought-within-24-hours-error
  * This class is used to handle orders
  */
 class OrderService {
-    #defaultBuyAmount = 10;       // How much USDT to spend on each purchase
-    #symbolActiveOrderLimit = 3;  // How many active orders a symbol can have
+    #defaultBuyAmount = 10;         // How much USDT to spend on each purchase TODO: +0.01% for fees
+    #symbolActiveOrderLimit = 3;    // How many active orders a symbol can have
+    #sellPercentageThreshold = 10;  // The percentage increase we are happy with for selling an active order
 
     /**
      *  @param {OrderRepository}
@@ -22,12 +26,27 @@ class OrderService {
     #balanceRepository;
 
     /**
+     *  @param {TickerRepository}
+     */
+    #tickerRepository;
+
+    /**
      * @param {OrderRepository} orderRepository The order repository
      * @param {BalanceRepository} balanceRepository The balance repository
+     * @param {TickerRepository} tickerRepository The ticker repository
      */
-    constructor(orderRepository, balanceRepository) {
+    constructor(orderRepository, balanceRepository, tickerRepository) {
         this.#orderRepository = orderRepository;
         this.#balanceRepository = balanceRepository;
+        this.#tickerRepository = tickerRepository;
+    }
+
+    /**
+     * Gets all the active buy orders from the database
+     * @returns {BuyOrderCollection} A BuyOrderCollection instance
+     */
+    async getActiveBuyOrders() {
+        return this.#orderRepository.getActiveBuyOrders();
     }
 
     /**
@@ -51,27 +70,39 @@ class OrderService {
 
             return order;
         } catch (error) {
-            console.error(`An error occurred while creating an order for ${symbol}: ${error.message}`);
+            console.error(`An error occurred while creating a buy order for ${symbol}: ${error.message}`);
             throw error;
         }
     }
 
     /**
-     * Creates a market sell order
-     * @returns 
+     * Cheks if there are any buy orders that have made enough profit and sells them if it's worth it
+     * @param {BuyOrder} order The buy order we want to check if it's worth selling
      */
-    async createMarketSellOrder(symbol) {
-        // TODO: 
-        // Get the balance of the symbol, save it as amount and pass it down to
-        // createMarketSellOrder(symbol, amount). This will then be used as the amount to be sold
+    async createMarketSellOrderForBuyOrder(buyOrder) {
+        try {
+            const ticker = await this.#tickerRepository.getTicker(buyOrder.symbol);
 
-        // TODO:
-        // Get all the active buy orders from database
-        // Compare the current price of the symbol for each of the active orders with the price_bought_at,
-        //  if the current price of the symbol is 10% or higher than price_bought_at then procced on selling that order.
-        //  After selling, set active to false in buy_orders table and create a new record in sell_orders
-        return this.#orderRepository.createMarketSellOrder(symbol);
+            if (CalculatorService.calculatePercentageDifference(buyOrder.priceBoughtAt, ticker.bidPrice) >= this.#sellPercentageThreshold) {
+                console.log(`${buyOrder.symbol}: `);
+                console.log(`Buy order ID: ${buyOrder.orderId}`);
+                console.log(`Bought at: ${buyOrder.priceBoughtAt}`);
+                console.log(`Can sell at: ${ticker.bidPrice}`);
+                console.log(`Difference: ${CalculatorService.calculatePercentageDifference(buyOrder.priceBoughtAt, ticker.bidPrice)}%`);
+                console.log(`Amount for sale: ${buyOrder.baseAmountBought}`);
+                console.log('==========================================================================================');
+
+                const sellOrder = await this.#orderRepository.createMarketSellOrderForBuyOrder(buyOrder);
+                await this.#orderRepository.saveSellOrder(sellOrder);
+                return sellOrder;
+            }
+
+            return undefined;
+        } catch (error) {
+            console.error(`An error occurred while creating a sell order for ${symbol}: ${error.message}`);
+            throw error;
+        }
     }
 }
 
-module.exports = new OrderService(OrderRepository, BalanceRepository);
+module.exports = new OrderService(OrderRepository, BalanceRepository, TickerRepository, CalculatorService);

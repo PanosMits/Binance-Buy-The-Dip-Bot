@@ -82,7 +82,7 @@ class MarketsService {
             'LTCUP/USDT', 'LTCDOWN/USDT', 'XRPUP/USDT', 'XRPDOWN/USDT', 'DOTUP/USDT', 'DOTDOWN/USDT',
             'TRXUP/USDT', 'TRXDOWN/USDT', 'EOSUP/USDT', 'EOSDOWN/USDT', 'XTZUP/USDT', 'XTZDOWN/USDT',
             'BNBUP/USDT', 'BNBDOWN/USDT', 'LINKUP/USDT', 'LINKDOWN/USDT', 'ADAUP/USDT', 'ADADOWN/USDT',
-            'ETHUP/USDT', 'ETHDOWN/USDT', 'BTCUP/USDT', 'BTCDOWN/USDT', 'DOGE/USDT'
+            'ETHUP/USDT', 'ETHDOWN/USDT', 'BTCUP/USDT', 'BTCDOWN/USDT', 'DOGE/USDT', 'SHIB/USDT'
         ];
         const markets = await this.getDollarMarkets();
         const marketsExcludingSpecifiedMarkets = markets

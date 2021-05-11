@@ -38,40 +38,21 @@ class Bot {
     }
 
     async run() {
-        // WORKING
-        // const dollarMarketsCollection = await this.#marketsService.getDollarMarkets();
-        // const marketCandlestickResults = await this.#candlestickService.get5mCandlesticks(dollarMarketsCollection);
-        // marketCandlestickResults.map((marketCandlestickResult) => {
-        //     console.log(`24 hour difference for: ${marketCandlestickResult.toObject().symbol} is: ${marketCandlestickResult.getMarket24HourDifference()}%`);
-        // });
-
-
-        // TEST getTicker
-        // const dollarMarketsCollection = await this.#marketsService.getDollarMarkets();
-        // Promise.all(dollarMarketsCollection.toArray().map(async (market) => {
-        //     const result = await this.#tickerService.getTicker(market.symbol);
-        //     console.log(`24 hour difference for: ${market.symbol} is: ${result.percentage}%`);
-        // }));
-
-
-        // TEST getTickers - Fastest way of getting the 24 hour change
-        // const marketCollection = await this.#marketsService.getDollarMarketsExcludingETFs();
-        // const tickerCollection = await this.#tickerService.getTickersForMarkets(marketCollection);
-        // console.log(tickerCollection.getBiggestNegativePercentages());
-
-
-        // TEST create order
-        console.time('Time');
-        const marketCollection = await this.#marketsService.getDollarMarkets();
+        // BUY
+        const marketCollection = await this.#marketsService.getDollarMarketsExcludingSpecifiedMarkets();
         const tickerCollection = await this.#tickerService.getTickersForMarkets(marketCollection);
         const tickers = tickerCollection.getBiggestNegativePercentages();
-
         if (tickers) {
-            Promise.all(tickers.map((ticker) => this.#orderService.createMarketBuyOrder(ticker.symbol)))
-                .then(() => console.timeEnd('Time'));
+            await Promise.allSettled(tickers.map((ticker) => this.#orderService.createMarketBuyOrder(ticker.symbol)));
         }
 
-        console.log(tickers);
+        // SELL
+        const buyOrderCollection = await this.#orderService.getActiveBuyOrders();
+        if (!buyOrderCollection.isEmpty()) {
+            await Promise.allSettled(buyOrderCollection.toArray().map((order) => this.#orderService.createMarketSellOrderForBuyOrder(order)));
+        }
+
+        console.log('Finised...');
     }
 }
 

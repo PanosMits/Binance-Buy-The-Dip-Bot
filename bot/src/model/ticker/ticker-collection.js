@@ -35,7 +35,6 @@ class TickerCollection {
     getBiggestNegativePercentages() {
         return this.#tickers
             .filter((ticker) => ticker.percentageChange <= -9)
-            .slice(0, 5)
             .sort((ticker, nextTicker) => ticker.percentageChange - nextTicker.percentageChange);
     }
 }

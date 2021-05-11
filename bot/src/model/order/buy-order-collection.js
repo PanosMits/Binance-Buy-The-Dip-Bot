@@ -26,6 +26,14 @@ class BuyOrderCollection {
     }
 
     /**
+     * Checks if the collection is technically empty
+     * @returns {boolean} true if empty, otherwise false
+     */
+    isEmpty() {
+        return this.#buyOrders.length <= 0;
+    }
+
+    /**
      * Checks if the limit of active orders in the collection has been reached
      * @param {number} symbolActiveOrderLimit The limit
      * @returns {boolean} true on success, false otherwise

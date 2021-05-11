@@ -1,4 +1,4 @@
-const { uuid } = require('uuidv4');
+const uuid = require('uuid');
 
 /**
  * This class represents an buy order
@@ -23,15 +23,15 @@ class BuyOrder {
     active
 
     /**
-     * @param {string} orderId The ticker's symbol
-     * @param {string} exchangeOrderId The ticker's symbol
-     * @param {string} symbol The ticker's symbol
-     * @param {number} date The ticker's symbol
-     * @param {string} timezone The ticker's symbol
-     * @param {number} baseAmountBought The 24 hour percentage change
-     * @param {number} priceBoughtAt The 24 hour percentage change
-     * @param {number} quoteAmountSpent The 24 hour percentage change
-     * @param {boolean} active T
+     * @param {string} orderId The order ID
+     * @param {string} exchangeOrderId The order ID given by the exchange
+     * @param {string} symbol The symbol of the order
+     * @param {number} date The date the order took place - in timestamp
+     * @param {string} timezone The zone the date is on
+     * @param {number} baseAmountBought The amount of the base currency bought
+     * @param {number} priceBoughtAt The price the base currency was bought at
+     * @param {number} quoteAmountSpent The amount of quote currency spent on the transaction
+     * @param {boolean} active Wether the order is active or not - meaning wether it has already been sold or not. True if active
      */
     constructor(
         orderId,
@@ -62,12 +62,12 @@ class BuyOrder {
      */
     static fromBinanceResponse(orderConfig) {
         return new this(
-            uuid(),
+            uuid.v4(),
             orderConfig.info.clientOrderId,
             orderConfig.symbol,
             orderConfig.timestamp, // Binance's time in force is on GTC, which is 1 hour earlier than my local - Might be good to use dayjs to turn into my local time
             orderConfig.timeInForce, // Binance says GTC but I think it's the same as UTC
-            orderConfig.amount,
+            orderConfig.amount - orderConfig.fee.cost, // Exclude the fee
             orderConfig.price,
             orderConfig.cost,
             true

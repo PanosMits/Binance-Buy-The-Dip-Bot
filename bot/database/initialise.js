@@ -36,7 +36,7 @@ const createSellOrdersTable = `
         order_id varchar(36) NOT NULL PRIMARY KEY,
         buy_order_id varchar(36) NOT NULL,
         exchange_order_id varchar(255) NOT NULL, 
-        date int(10) NOT NULL COMMENT 'The date the sell order was executed - as timestamp',
+        date int(20) NOT NULL COMMENT 'The date the sell order was executed - as timestamp',
         timezone varchar(10) NOT NULL COMMENT 'The timezone the date is on',
         base_amount_sold decimal(65, 30) NOT NULL COMMENT 'The amount of the base currency sold',
         price_sold_at decimal(65, 30) NOT NULL COMMENT 'The price of the crypto at the time of sell',

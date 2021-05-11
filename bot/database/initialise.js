@@ -23,7 +23,7 @@ const createBuyOrdersTable = `
         exchange_order_id varchar(255) NOT NULL COMMENT 'The clientOrderId fromt the response',
         symbol varchar(255) NOT NULL,
         date int(20) NOT NULL COMMENT 'The date the buy order was executed - as timestamp',
-        timezone varchar(10) NOT NULL COMMENT 'The timezone the date is referring to',
+        timezone varchar(10) NOT NULL COMMENT 'The timezone the date is on',
         base_amount_bought decimal(65, 30) NOT NULL COMMENT 'The amount of the base currency bought',
         price_bought_at decimal(65, 30) NOT NULL COMMENT 'The price of the crypto at the time of purchase',
         quote_amount_spent decimal(65, 30) NOT NULL COMMENT 'The amount of the quote currency spent in order to buy the base currency',
@@ -37,8 +37,9 @@ const createSellOrdersTable = `
         buy_order_id varchar(36) NOT NULL,
         exchange_order_id varchar(255) NOT NULL, 
         date int(10) NOT NULL COMMENT 'The date the sell order was executed - as timestamp',
+        timezone varchar(10) NOT NULL COMMENT 'The timezone the date is on',
         base_amount_sold decimal(65, 30) NOT NULL COMMENT 'The amount of the base currency sold',
-        price_sold_at decimal(65, 30) NOT NULL COMMENT 'The quote price of the crypto at the time of sell',
+        price_sold_at decimal(65, 30) NOT NULL COMMENT 'The price of the crypto at the time of sell',
         quote_amount_returned decimal(65, 30) NOT NULL COMMENT 'Technically, this is the profit made',
         FOREIGN KEY (buy_order_id) REFERENCES buy_orders(order_id)
     );
